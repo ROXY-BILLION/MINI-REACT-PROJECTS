@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: #080b14;
+}
+
+a {
+    text-decoration: none;
+}
+
+.navbar {
+    min-height: 80px;
+    padding: 0 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    position: relative;
+    background: #0d1328;
+    border-bottom: 1px solid #202944;
+}
+
+.logo {
+    color: #f8fafc;
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: #a78bfa;
+}
+
+.desktop-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.desktop-links a {
+    color: #aab4ca;
+    font-size: 14px;
+    transition: color 0.25s ease;
+}
+
+.desktop-links a:hover {
+    color: #a78bfa;
+}
+
+.menu-btn {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #303a56;
+    border-radius: 12px;
+    background: #151d36;
+    color: #f8fafc;
+    font-size: 23px;
+    cursor: pointer;
+    transition: background 0.25s ease;
+}
+
+.menu-btn:hover {
+    background: #292044;
+}
+
+.mobile-menu {
+    display: none;
+}
+
+/* Mobile layout */
+@media (max-width: 700px) {
+    .navbar {
+        min-height: 72px;
+        padding: 0 5%;
+    }
+
+    .desktop-links {
+        display: none;
+    }
+
+    .menu-btn {
+        display: grid;
+        place-items: center;
+    }
+
+    .mobile-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 12px 5% 20px;
+        background: #0d1328;
+        border-bottom: 1px solid #202944;
+        animation: menuReveal 0.25s ease;
+    }
+
+    .mobile-menu a {
+        padding: 14px;
+        border-radius: 9px;
+        color: #aab4ca;
+        font-size: 14px;
+        transition: 0.25s ease;
+    }
+
+    .mobile-menu a:hover {
+        color: #a78bfa;
+        background: #151d36;
+    }
+}
+
+@keyframes menuReveal {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
