@@ -1,6 +1,60 @@
+import { useState } from "react";
 import "./App.css";
 
+const initialForm = {
+    name: "",
+    email: "",
+    subject: "",
+    service: "",
+    message: "",
+};
+
 function App() {
+    const [formData, setFormData] = useState(initialForm);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [feedback, setFeedback] = useState({
+        type: "",
+        message: "",
+    });
+
+    function handleChange(event) {
+        const { name, value } = event.target;
+
+        setFormData((previousData) => ({
+            ...previousData,
+            [name]: value,
+        }));
+
+        setFeedback({ type: "", message: "" });
+    }
+
+    function handleSubmit(event) {
+        event.preventDefault();
+
+        if (isSubmitting) return;
+
+        setIsSubmitting(true);
+        setFeedback({ type: "", message: "" });
+
+        // Frontend demo only: no message is sent to a server.
+        setTimeout(() => {
+            setIsSubmitting(false);
+
+            setFeedback({
+                type: "success",
+                message:
+                    "Your form passed validation! Connect a backend or email service to deliver your message.",
+            });
+
+            setFormData({ ...initialForm });
+        }, 800);
+    }
+
+    function handleReset() {
+        setFormData({ ...initialForm });
+        setFeedback({ type: "", message: "" });
+    }
+
     return (
         <main className="contact-page">
             <nav className="navbar">
@@ -15,7 +69,7 @@ function App() {
                 </div>
             </nav>
 
-            <section className="contact-layout">
+            <section className="contact-layout" id="home">
                 <div className="contact-intro">
                     <p className="eyebrow">
                         <span></span> LET'S CONNECT
@@ -40,7 +94,11 @@ function App() {
                             <div className="detail-icon">@</div>
                             <div>
                                 <p>Email us</p>
-                                <h3>hello@velora.dev</h3>
+                                <h3>
+                                    <a href="mailto:hello@velora.dev">
+                                        hello@velora.dev
+                                    </a>
+                                </h3>
                             </div>
                         </div>
 
@@ -73,14 +131,25 @@ function App() {
                         Fill in the details below and let's get started.
                     </p>
 
-                    <form className="contact-form">
+                    <form
+                        className="contact-form"
+                        onSubmit={handleSubmit}
+                        onReset={handleReset}
+                    >
                         <div className="input-row">
                             <div className="form-group">
                                 <label htmlFor="name">Full name</label>
                                 <input
                                     id="name"
+                                    name="name"
                                     type="text"
                                     placeholder="John Doe"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    autoComplete="name"
+                                    minLength={2}
+                                    maxLength={100}
+                                    required
                                 />
                             </div>
 
@@ -88,8 +157,14 @@ function App() {
                                 <label htmlFor="email">Email address</label>
                                 <input
                                     id="email"
+                                    name="email"
                                     type="email"
                                     placeholder="john@example.com"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    autoComplete="email"
+                                    maxLength={254}
+                                    required
                                 />
                             </div>
                         </div>
@@ -98,21 +173,40 @@ function App() {
                             <label htmlFor="subject">Subject</label>
                             <input
                                 id="subject"
+                                name="subject"
                                 type="text"
                                 placeholder="What is this about?"
+                                value={formData.subject}
+                                onChange={handleChange}
+                                maxLength={150}
+                                required
                             />
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="service">What do you need?</label>
-                            <select id="service" defaultValue="">
+                            <select
+                                id="service"
+                                name="service"
+                                value={formData.service}
+                                onChange={handleChange}
+                                required
+                            >
                                 <option value="" disabled>
                                     Select a service
                                 </option>
-                                <option value="web">Web Development</option>
-                                <option value="app">App Development</option>
-                                <option value="ui">UI/UX Design</option>
-                                <option value="other">Something else</option>
+                                <option value="web">
+                                    Web Development
+                                </option>
+                                <option value="app">
+                                    App Development
+                                </option>
+                                <option value="ui">
+                                    UI/UX Design
+                                </option>
+                                <option value="other">
+                                    Something else
+                                </option>
                             </select>
                         </div>
 
@@ -120,17 +214,50 @@ function App() {
                             <label htmlFor="message">Your message</label>
                             <textarea
                                 id="message"
-                                rows="5"
+                                name="message"
+                                rows={5}
                                 placeholder="Tell me a little about your idea..."
+                                value={formData.message}
+                                onChange={handleChange}
+                                minLength={10}
+                                maxLength={3000}
+                                required
                             ></textarea>
+
                             <span className="field-hint">
-                                Share as much detail as you need.
+                                {formData.message.length}/3000 characters
                             </span>
                         </div>
 
-                        <button type="submit" className="submit-btn">
-                            Send message <span>↗</span>
+                        <button
+                            type="submit"
+                            className="submit-btn"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting
+                                ? "Checking your message..."
+                                : "Send message"}
+
+                            <span>{isSubmitting ? "…" : "↗"}</span>
                         </button>
+
+                        <button
+                            type="reset"
+                            className="reset-btn"
+                            disabled={isSubmitting}
+                        >
+                            Clear form
+                        </button>
+
+                        {feedback.message && (
+                            <p
+                                className={`form-feedback ${feedback.type}`}
+                                role="status"
+                                aria-live="polite"
+                            >
+                                {feedback.message}
+                            </p>
+                        )}
 
                         <p className="privacy-note">
                             Your details will only be used to respond to

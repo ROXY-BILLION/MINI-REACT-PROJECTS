@@ -510,3 +510,48 @@ button {
         transition-duration: 0.01ms !important;
     }
 }
+
+/* Form interaction states */
+.submit-btn:disabled,
+.reset-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+    transform: none;
+    box-shadow: none;
+}
+
+.reset-btn {
+    width: 100%;
+    min-height: 42px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.reset-btn:hover {
+    border-color: var(--accent);
+    color: var(--text);
+}
+
+.form-feedback {
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.form-feedback.success {
+    border-color: #86efac55;
+    background: #86efac10;
+    color: #86efac;
+}
+
+.form-feedback.error {
+    border-color: #f8717155;
+    background: #f8717110;
+    color: #fca5a5;
+}
